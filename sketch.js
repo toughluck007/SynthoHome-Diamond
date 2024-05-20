@@ -46,14 +46,14 @@ function drawDiamond() {
   let gradient = [c1, c2, c3];
   let sizeFactor = height / 10; // Dynamic size based on canvas height
 
-  // Define diamond vertices
+  // Define diamond vertices with increased height
   let vertices = [
-    createVector(0, -sizeFactor, 0), // Top vertex
+    createVector(0, -sizeFactor * 1.5, 0), // Taller top vertex
     createVector(sizeFactor, 0, sizeFactor), // Front right
     createVector(-sizeFactor, 0, sizeFactor), // Front left
     createVector(-sizeFactor, 0, -sizeFactor), // Back left
     createVector(sizeFactor, 0, -sizeFactor), // Back right
-    createVector(0, sizeFactor, 0) // Bottom vertex
+    createVector(0, sizeFactor * 1.5, 0) // Taller bottom vertex
   ];
 
   // Draw diamond faces
