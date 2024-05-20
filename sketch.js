@@ -1,5 +1,4 @@
 let angle = 0;
-let backgroundColor = '#40403f';
 let diamondColors;
 let colorIndex = 0;
 let colorLerp = 0;
@@ -9,16 +8,20 @@ function setup() {
   diamondColors = [
     [color(0, 0, 255), color(128, 0, 128), color(255, 20, 147)], // Blue, purple, pink
     [color(128, 0, 128), color(255, 20, 147), color(0, 0, 255)], // Purple, pink, blue
-    [color(255, 20, 147), color(0, 0, 255), color(128, 0, 128)]  // Pink, blue, purple
+    [color(255, 20, 147), color(0, 0, 255), color(128, 0, 128)], // Pink, blue, purple
   ];
+
+  // Ensure the canvas background is transparent
+  let canvas = createCanvas(windowWidth, windowHeight, WEBGL);
+  canvas.style("background", "transparent");
 }
 
 function draw() {
-  background(backgroundColor);
-  
+  clear(); // Clear the canvas with transparency
+
   // Update the gradient colors
   updateGradientColors();
-  
+
   // Draw the spinning diamond
   push();
   translate(0, 0, 0); // Center the diamond
@@ -40,9 +43,21 @@ function updateGradientColors() {
 }
 
 function drawDiamond() {
-  let c1 = lerpColor(diamondColors[colorIndex][0], diamondColors[(colorIndex + 1) % diamondColors.length][0], colorLerp);
-  let c2 = lerpColor(diamondColors[colorIndex][1], diamondColors[(colorIndex + 1) % diamondColors.length][1], colorLerp);
-  let c3 = lerpColor(diamondColors[colorIndex][2], diamondColors[(colorIndex + 1) % diamondColors.length][2], colorLerp);
+  let c1 = lerpColor(
+    diamondColors[colorIndex][0],
+    diamondColors[(colorIndex + 1) % diamondColors.length][0],
+    colorLerp
+  );
+  let c2 = lerpColor(
+    diamondColors[colorIndex][1],
+    diamondColors[(colorIndex + 1) % diamondColors.length][1],
+    colorLerp
+  );
+  let c3 = lerpColor(
+    diamondColors[colorIndex][2],
+    diamondColors[(colorIndex + 1) % diamondColors.length][2],
+    colorLerp
+  );
   let gradient = [c1, c2, c3];
   let sizeFactor = height / 10; // Dynamic size based on canvas height
 
@@ -53,7 +68,7 @@ function drawDiamond() {
     createVector(-sizeFactor, 0, sizeFactor), // Front left
     createVector(-sizeFactor, 0, -sizeFactor), // Back left
     createVector(sizeFactor, 0, -sizeFactor), // Back right
-    createVector(0, sizeFactor * 1.5, 0) // Taller bottom vertex
+    createVector(0, sizeFactor * 1.5, 0), // Taller bottom vertex
   ];
 
   // Draw diamond faces
@@ -65,13 +80,17 @@ function drawDiamond() {
     [5, 2, 1], // Bottom front
     [5, 3, 2], // Bottom left
     [5, 4, 3], // Bottom back
-    [5, 1, 4] // Bottom right
+    [5, 1, 4], // Bottom right
   ];
 
   for (let face of faces) {
     beginShape();
     let lerpFactor = face[0] / vertices.length;
-    let inter = lerpColor(gradient[face[0] % gradient.length], gradient[(face[0] + 1) % gradient.length], lerpFactor);
+    let inter = lerpColor(
+      gradient[face[0] % gradient.length],
+      gradient[(face[0] + 1) % gradient.length],
+      lerpFactor
+    );
     fill(inter);
     for (let i of face) {
       vertex(vertices[i].x, vertices[i].y, vertices[i].z);
